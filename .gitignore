@@ -1,0 +1,29 @@
+# 虚拟环境
+.venv/
+venv/
+
+# Python 缓存
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# SQLite 数据库及 WAL 文件（运行时自动生成）
+app/ecommerce.db
+app/ecommerce.db-wal
+app/ecommerce.db-shm
+
+# 测试产物
+allure-results/*
+reports/*
+logs/*
+screenshots/*
+videos/*
+!allure-results/.gitkeep
+!reports/.gitkeep
+!logs/.gitkeep
+!screenshots/.gitkeep
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store

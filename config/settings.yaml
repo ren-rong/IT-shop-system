@@ -1,0 +1,19 @@
+# 环境配置（克隆仓库后一般无需修改，SQLite 零配置）
+env: test
+
+test:
+  base_url: http://127.0.0.1:8000
+  web_login_url: http://127.0.0.1:8000/static/login.html
+
+server:
+  host: 127.0.0.1
+  port: 8000
+
+database:
+  # SQLite 数据库文件，路径相对项目根目录
+  path: app/ecommerce.db
+
+# 测试主账号（种子数据，启动服务自动创建）
+admin:
+  username: testadmin
+  password: "123456"

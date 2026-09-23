@@ -1,0 +1,14 @@
+# ===== Web 被测服务 =====
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+PyJWT==2.10.1
+
+# ===== 接口 / UI 自动化 =====
+requests==2.32.3
+pytest==8.3.4
+pytest-html==4.1.1
+playwright==1.49.1
+allure-pytest==2.13.5
+PyYAML==6.0.2
+faker==33.1.0

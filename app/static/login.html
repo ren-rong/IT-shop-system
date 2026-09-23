@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <title>登录 - 电商后台</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: "Microsoft YaHei", Arial, sans-serif; background: #f0f2f5; }
+    .login-wrap { display: flex; justify-content: center; align-items: center; height: 100vh; }
+    .login-card { width: 380px; background: #fff; border-radius: 10px; padding: 40px 35px;
+      box-shadow: 0 6px 24px rgba(0,0,0,.08); }
+    .login-card h2 { text-align: center; margin-bottom: 8px; color: #1f2d3d; }
+    .login-card .sub { text-align: center; color: #909399; font-size: 13px; margin-bottom: 26px; }
+    .form-item { margin-bottom: 18px; }
+    .form-item label { display: block; font-size: 13px; color: #606266; margin-bottom: 6px; }
+    .form-item input { width: 100%; height: 40px; padding: 0 12px; border: 1px solid #dcdfe6;
+      border-radius: 6px; font-size: 14px; outline: none; }
+    .form-item input:focus { border-color: #409eff; }
+    .btn { width: 100%; height: 42px; background: #409eff; color: #fff; border: none;
+      border-radius: 6px; font-size: 15px; cursor: pointer; }
+    .btn:hover { background: #337ecc; }
+    .error-msg { color: #f56c6c; font-size: 13px; text-align: center; min-height: 20px; margin-bottom: 10px; }
+    .tip { color: #909399; font-size: 12px; text-align: center; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <div class="login-wrap">
+    <div class="login-card">
+      <h2 id="welcome-title">电商后台管理系统</h2>
+      <div class="sub">接口 + WebUI 自动化测试演示平台</div>
+      <div id="message" class="error-msg"></div>
+      <div class="form-item">
+        <label>用户名</label>
+        <input id="username" type="text" placeholder="请输入用户名" autocomplete="username">
+      </div>
+      <div class="form-item">
+        <label>密码</label>
+        <input id="password" type="password" placeholder="请输入密码" autocomplete="current-password">
+      </div>
+      <button id="login-btn" class="btn">登 录</button>
+      <div class="tip">演示账号：testadmin / 123456</div>
+    </div>
+  </div>
+  <script src="common.js"></script>
+  <script>
+    const msgBox = document.getElementById('message');
+    async function doLogin() {
+      msgBox.textContent = '';
+      const username = document.getElementById('username').value.trim();
+      const password = document.getElementById('password').value;
+      const { httpStatus, body } = await apiFetch('/api/login', {
+        method: 'POST',
+        body: JSON.stringify({ username, password })
+      });
+      if (body && body.code === 200) {
+        setToken(body.data.token);
+        setUser(body.data.username);
+        location.href = 'goods.html';
+      } else {
+        msgBox.textContent = body ? body.msg : '登录失败，请重试';
+      }
+    }
+    document.getElementById('login-btn').addEventListener('click', doLogin);
+    document.getElementById('password').addEventListener('keydown', e => {
+      if (e.key === 'Enter') doLogin();
+    });
+  </script>
+</body>
+</html>
