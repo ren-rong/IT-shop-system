@@ -26,10 +26,10 @@ class TestUIOrder:
         op.create_order(gid, 1)
         # 第一层：成功提示
         assert "下单成功" in op.get_msg()
+        # 第二层：列表出现该订单（等待异步刷新完成）
+        assert op.row_exists("无线鼠标")
         # 取列表第一行（最新倒序）订单号
         order_no = logged_page.locator("#order-list .order-no").first.text_content()
-        # 第二层：列表出现该订单
-        assert op.row_exists("无线鼠标")
         # 第三层：数据库订单存在且为待支付
         row = db.query_one("SELECT * FROM orders WHERE order_no=?", (order_no,))
         assert row is not None

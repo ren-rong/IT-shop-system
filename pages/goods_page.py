@@ -20,9 +20,11 @@ class GoodsPage(BasePage):
         self.fill(self.PRICE, price)
         self.fill(self.STOCK, stock)
         self.click(self.ADD_BTN)
+        # 等待后端处理完成、提示出现（成功或失败消息）
+        self.wait_text_present(self.MSG)
 
     def get_msg(self):
         return (self.text(self.MSG) or "").strip()
 
     def row_exists(self, name):
-        return self.page.locator(f"{self.LIST} tr", has_text=name).count() > 0
+        return self.wait_row(self.LIST, name)

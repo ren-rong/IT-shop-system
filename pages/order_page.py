@@ -18,9 +18,11 @@ class OrderPage(BasePage):
         self.fill(self.GOODS_ID, goods_id)
         self.fill(self.QTY, quantity)
         self.click(self.CREATE_BTN)
+        # 等待后端处理完成、提示出现（成功或失败消息）
+        self.wait_text_present(self.MSG)
 
     def get_msg(self):
         return (self.text(self.MSG) or "").strip()
 
     def row_exists(self, text):
-        return self.page.locator(f"{self.LIST} tr", has_text=text).count() > 0
+        return self.wait_row(self.LIST, text)

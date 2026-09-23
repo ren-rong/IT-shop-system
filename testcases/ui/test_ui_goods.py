@@ -14,6 +14,7 @@ class TestUIGoods:
     def test_goods_list_loads(self, logged_page):
         gp = GoodsPage(logged_page)
         gp.goto_page()
+        gp.wait_row_count_atleast(gp.LIST, 4)
         assert gp.row_count(gp.LIST) >= 4
 
     @pytest.mark.smoke

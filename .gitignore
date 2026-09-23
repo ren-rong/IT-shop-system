@@ -27,3 +27,9 @@ videos/*
 .idea/
 .vscode/
 .DS_Store
+
+# 本地环境排查用临时诊断/验证脚本
+/_diag_*.py
+/_probe_*.py
+/_test_*.py
+/_verify_*.py

@@ -64,7 +64,8 @@ def _start_server():
     creation_flags = subprocess.CREATE_NO_WINDOW if os.name == "nt" else 0
     logger.info(f"启动被测服务: {' '.join(cmd)}")
     return subprocess.Popen(
-        cmd, cwd=ROOT_DIR, stdout=logf, stderr=subprocess.STDOUT,
+        cmd, cwd=ROOT_DIR, stdin=subprocess.DEVNULL,
+        stdout=logf, stderr=subprocess.STDOUT,
         creationflags=creation_flags,
     )
 
@@ -153,9 +154,20 @@ def admin_token(test_environment):
 @pytest.fixture(scope="session")
 def playwright_instance():
     from playwright.sync_api import sync_playwright
-    pw = sync_playwright().start()
-    yield pw
-    pw.stop()
+
+    # driver 握手可能因首次冷启动被杀软扫描/目录瞬时变动而偶发失败，自动重试
+    last_error = None
+    for attempt in range(1, 4):
+        try:
+            with sync_playwright() as pw:
+                logger.info(f"Playwright driver 启动成功（第 {attempt} 次尝试）")
+                yield pw
+                return
+        except Exception as exc:  # 握手失败，with 已自动清理，退避后重试
+            last_error = exc
+            logger.warning(f"Playwright driver 启动失败（第 {attempt} 次）: {exc}")
+            time.sleep(2)
+    raise last_error
 
 
 @pytest.fixture(scope="session")

@@ -13,6 +13,10 @@ class TestUILogin:
         lp.wait_until_logged_in()
         # 登录后进入商品页，核心元素可见
         assert page.locator("#add-goods-btn").is_visible()
+        # 等待列表异步加载完成
+        page.wait_for_function(
+            "document.querySelectorAll('#goods-list tr').length >= 4"
+        )
         assert page.locator("#goods-list tr").count() >= 4
 
     def test_ui_login_welcome_title_visible(self, page, test_environment):

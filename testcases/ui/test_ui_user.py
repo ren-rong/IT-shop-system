@@ -14,6 +14,7 @@ class TestUIUser:
     def test_user_list_loads(self, logged_page):
         up = UserPage(logged_page)
         up.goto_page()
+        up.wait_row_count_atleast(up.LIST, 3)
         assert up.row_count(up.LIST) >= 3
 
     @pytest.mark.smoke
